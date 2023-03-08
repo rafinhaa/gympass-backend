@@ -6,3 +6,6 @@ yarn-error.log
 
 # Build folder
 build
+
+# DotEnv File
+.env

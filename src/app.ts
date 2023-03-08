@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import { env } from "./env";
 
 const envToLogger = {
   development: {
@@ -15,5 +16,5 @@ const envToLogger = {
 };
 
 export const app = fastify({
-  logger: envToLogger["development"],
+  logger: envToLogger[env.NODE_ENV],
 });
