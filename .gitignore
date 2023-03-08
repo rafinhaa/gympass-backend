@@ -1,0 +1,8 @@
+# NodeJS Modules
+node_modules
+
+# Yarn
+yarn-error.log
+
+# Build folder
+build
