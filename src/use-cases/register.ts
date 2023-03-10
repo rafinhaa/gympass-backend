@@ -18,6 +18,11 @@ export class RegisterUseCase {
 
     if (userWithSameEmail) throw new UserAlreadyExistsError();
 
-    await this.usersRepository.create({ email, password_hash, name });
+    const user = await this.usersRepository.create({
+      email,
+      password_hash,
+      name,
+    });
+    return { user };
   };
 }
