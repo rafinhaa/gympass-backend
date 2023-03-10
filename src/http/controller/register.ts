@@ -15,15 +15,9 @@ export const register = async (
 
   const registerBodyParsed = registerBodySchema.parse(request.body);
 
-  try {
-    const prismaUsersRepository = new PrismaUsersRepository();
-    const registerUseCase = new RegisterUseCase(prismaUsersRepository);
+  const prismaUsersRepository = new PrismaUsersRepository();
+  const registerUseCase = new RegisterUseCase(prismaUsersRepository);
 
-    await registerUseCase.execute(registerBodyParsed);
-    return reply.status(201).send();
-  } catch (error) {
-    if (error instanceof Error)
-      return reply.status(409).send({ message: error.message });
-    return reply.status(500).send({ message: "unknown" });
-  }
+  await registerUseCase.execute(registerBodyParsed);
+  return reply.status(201).send();
 };
