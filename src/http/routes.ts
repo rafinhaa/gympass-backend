@@ -13,10 +13,6 @@ export const appRoutes = async (app: FastifyInstance) => {
         message: error.message,
       });
 
-    reply.status(500).send({
-      statusCode: 500,
-      error: "Internal Server Error",
-      message: "Ocorreu um erro interno",
-    });
+    throw error;
   });
 };

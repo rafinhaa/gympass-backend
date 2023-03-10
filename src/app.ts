@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import { env } from "@/env";
 import { appRoutes } from "./http/routes";
+import { ZodError } from "zod";
 
 const envToLogger = {
   development: {
@@ -21,3 +22,20 @@ export const app = fastify({
 });
 
 app.register(appRoutes);
+
+app.setErrorHandler((error, _, reply) => {
+  if (env.NODE_ENV !== "production") console.log(error);
+
+  if (error instanceof ZodError)
+    return reply.status(400).send({
+      statusCode: 400,
+      error: "Validation error",
+      message: error.format(),
+    });
+
+  reply.status(500).send({
+    statusCode: 500,
+    error: "Internal Server Error",
+    message: "Ocorreu um erro interno",
+  });
+});
