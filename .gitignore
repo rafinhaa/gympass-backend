@@ -9,3 +9,6 @@ build
 
 # DotEnv File
 .env
+
+# Coverage files
+coverage
