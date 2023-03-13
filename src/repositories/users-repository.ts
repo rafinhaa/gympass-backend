@@ -5,4 +5,5 @@ export interface UsersRepository {
   findByEmail(
     email: Pick<Prisma.UserCreateInput, "email">
   ): Promise<User | null>;
+  findById(id: Pick<Prisma.UserCreateInput, "id">): Promise<User | null>;
 }
