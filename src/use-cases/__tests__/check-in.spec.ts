@@ -1,17 +1,30 @@
 import { CheckInsRepository } from "@/repositories/check-in-repository";
 import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
+import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
+import { Decimal } from "@prisma/client/runtime";
 import { beforeEach, expect, describe, it, vi, afterEach } from "vitest";
 import { CheckInUseCase } from "../check-in";
 
 let checkInsRepository: CheckInsRepository;
+let gymRepository: InMemoryGymsRepository;
 let sut: CheckInUseCase;
 
 describe("Check In Use Case", () => {
   beforeEach(() => {
     checkInsRepository = new InMemoryCheckInsRepository();
-    sut = new CheckInUseCase(checkInsRepository);
+    gymRepository = new InMemoryGymsRepository();
+    sut = new CheckInUseCase(checkInsRepository, gymRepository);
 
     vi.useFakeTimers();
+
+    gymRepository.items.push({
+      id: "gym-1",
+      title: "Title",
+      description: "",
+      latitude: new Decimal(0),
+      longitude: new Decimal(0),
+      phone: "",
+    });
   });
 
   afterEach(() => {
@@ -22,6 +35,8 @@ describe("Check In Use Case", () => {
     const { checkIn } = await sut.execute({
       gymId: "gym-1",
       userId: "user-1",
+      userLatitude: 0,
+      userLongitude: 0,
     });
 
     expect(checkIn).toEqual({
@@ -40,6 +55,8 @@ describe("Check In Use Case", () => {
       await sut.execute({
         gymId: "gym-1",
         userId: "user-1",
+        userLatitude: 0,
+        userLongitude: 0,
       });
 
     await newCheckIn();
@@ -53,6 +70,8 @@ describe("Check In Use Case", () => {
     await sut.execute({
       gymId: "gym-1",
       userId: "user-1",
+      userLatitude: 0,
+      userLongitude: 0,
     });
 
     const nextDay = "2021-01-02T00:00:00.000Z";
@@ -62,6 +81,8 @@ describe("Check In Use Case", () => {
     const { checkIn } = await sut.execute({
       gymId: "gym-1",
       userId: "user-1",
+      userLatitude: 0,
+      userLongitude: 0,
     });
 
     expect(checkIn).toEqual({
