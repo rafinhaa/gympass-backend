@@ -93,4 +93,24 @@ describe("Check In Use Case", () => {
       validated_at: null,
     });
   });
+
+  it("should not be able to check in on distance gym", async () => {
+    gymRepository.items.push({
+      id: "gym-2",
+      title: "Title",
+      description: "",
+      latitude: new Decimal(-27.0747279),
+      longitude: new Decimal(-49.4889672),
+      phone: "",
+    });
+
+    await expect(async () => {
+      await sut.execute({
+        gymId: "gym-2",
+        userId: "user-1",
+        userLatitude: -27.2092052,
+        userLongitude: -49.6401091,
+      });
+    }).rejects.toBeInstanceOf(Error);
+  });
 });
