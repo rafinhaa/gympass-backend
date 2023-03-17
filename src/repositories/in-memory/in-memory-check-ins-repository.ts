@@ -49,8 +49,6 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
       return checkIn.id === data.id;
     });
 
-    console.log(this.items[checkInIndex]);
-
     if (checkInIndex >= 0) this.items[checkInIndex] = data;
     return data;
   }

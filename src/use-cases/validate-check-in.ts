@@ -1,7 +1,7 @@
 import { CheckInsRepository } from "@/repositories/check-in-repository";
-import { GymsRepository } from "@/repositories/gyms-repository";
-import { getDistanceBetweenCoordinates } from "@/utils/get-distance-between-coodinates";
 import { CheckIn } from "@prisma/client";
+import dayjs from "dayjs";
+import { LateCheckInValidationError } from "./errors/late-check-in-validation-error";
 import { ResourceNotFound } from "./errors/resource-not-found";
 
 interface ValidatedCheckInUseCaseRequest {
@@ -21,6 +21,14 @@ export class ValidatedCheckInUseCase {
     const checkIn = await this.checkInsRepository.findById(checkInId);
 
     if (!checkIn) throw new ResourceNotFound();
+
+    const distanceInMinutesFromCheckInCreation = dayjs(new Date()).diff(
+      checkIn.created_at,
+      "minutes"
+    );
+
+    if (distanceInMinutesFromCheckInCreation > 20)
+      throw new LateCheckInValidationError(0);
 
     const checkInValidated: CheckIn = {
       ...checkIn,
