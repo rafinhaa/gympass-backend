@@ -2,6 +2,7 @@ import fastify from "fastify";
 import { env } from "@/env";
 import { appRoutes } from "./http/routes";
 import { ZodError } from "zod";
+import fastifyJwt from "@fastify/jwt";
 
 const envToLogger = {
   development: {
@@ -19,6 +20,10 @@ const envToLogger = {
 
 export const app = fastify({
   logger: envToLogger[env.NODE_ENV],
+});
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
 });
 
 app.register(appRoutes);

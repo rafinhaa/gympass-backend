@@ -15,6 +15,15 @@ export const authenticate = async (
 
   const authenticateUseCase = makeAuthenticateUseCase();
 
-  await authenticateUseCase.execute(authenticationBodyParsed);
-  return reply.status(200).send();
+  const { user } = await authenticateUseCase.execute(authenticationBodyParsed);
+  const token = await reply.jwtSign(
+    {},
+    {
+      sign: {
+        sub: user.id,
+      },
+    }
+  );
+
+  return reply.status(200).send({ token });
 };
