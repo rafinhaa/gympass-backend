@@ -5,12 +5,13 @@ import { profile } from "./controller/profile";
 import { register } from "./controller/register";
 
 import { BaseError } from "@/use-cases/errors/base-error";
+import { verifyJWT } from "./middleware/verify-jwt";
 
 export const appRoutes = async (app: FastifyInstance) => {
   app.post("/users", register);
   app.post("/sessions", authenticate);
 
-  app.get("/me", profile);
+  app.get("/me", { preHandler: verifyJWT }, profile);
 
   app.setErrorHandler((error, _, reply) => {
     if (error instanceof BaseError)
