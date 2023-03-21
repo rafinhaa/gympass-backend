@@ -1,13 +1,13 @@
 import { FastifyInstance } from "fastify";
 
-import { authenticate } from "./controller/authenticate";
-import { profile } from "./controller/profile";
-import { register } from "./controller/register";
+import { authenticate } from "@/http/controller/users/authenticate";
+import { profile } from "@/http/controller/users/profile";
+import { register } from "@/http/controller/users/register";
 
 import { BaseError } from "@/use-cases/errors/base-error";
-import { verifyJWT } from "./middleware/verify-jwt";
+import { verifyJWT } from "@/http/middleware/verify-jwt";
 
-export const appRoutes = async (app: FastifyInstance) => {
+export const usersRoutes = async (app: FastifyInstance) => {
   app.post("/users", register);
   app.post("/sessions", authenticate);
 

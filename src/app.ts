@@ -1,8 +1,10 @@
 import fastify from "fastify";
 import { env } from "@/env";
-import { appRoutes } from "./http/routes";
+
 import { ZodError } from "zod";
 import fastifyJwt from "@fastify/jwt";
+import { usersRoutes } from "@/http/controller/users/routes";
+import { gymsRoutes } from "@/http/controller/gyms/routes";
 
 const envToLogger = {
   development: {
@@ -26,7 +28,8 @@ app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 });
 
-app.register(appRoutes);
+app.register(gymsRoutes);
+app.register(usersRoutes);
 
 app.setErrorHandler((error, _, reply) => {
   if (env.NODE_ENV !== "production") console.log(error);
