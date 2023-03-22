@@ -5,6 +5,7 @@ import { ZodError } from "zod";
 import fastifyJwt from "@fastify/jwt";
 import { usersRoutes } from "@/http/controller/users/routes";
 import { gymsRoutes } from "@/http/controller/gyms/routes";
+import { checkInsRoutes } from "./http/controller/check-ins/routes";
 
 const envToLogger = {
   development: {
@@ -28,6 +29,9 @@ app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 });
 
+app.register(checkInsRoutes, {
+  prefix: "check-ins",
+});
 app.register(gymsRoutes, {
   prefix: "gyms",
 });
