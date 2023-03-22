@@ -28,7 +28,9 @@ app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 });
 
-app.register(gymsRoutes);
+app.register(gymsRoutes, {
+  prefix: "gyms",
+});
 app.register(usersRoutes);
 
 app.setErrorHandler((error, _, reply) => {
