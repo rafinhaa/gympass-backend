@@ -11,7 +11,7 @@ export const validate = async (
     checkInId: z.string().uuid(),
   });
 
-  const checkInId = validateCheckInQuerySchema.parse(request.query);
+  const checkInId = validateCheckInQuerySchema.parse(request.params);
 
   const createCheckInUseCase = makeValidateCheckInUseCase();
 

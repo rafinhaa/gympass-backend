@@ -13,7 +13,7 @@ export const checkInsRoutes = async (app: FastifyInstance) => {
   app.get("/history", history);
   app.get("/metrics", metrics);
 
-  app.post("/:gymId/check-ins", create);
+  app.post("/gyms/:gymId/create", create);
   app.patch("/:checkInId/validate", validate);
 
   app.setErrorHandler((error, _, reply) => {
