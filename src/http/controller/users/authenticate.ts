@@ -16,6 +16,7 @@ export const authenticate = async (
   const authenticateUseCase = makeAuthenticateUseCase();
 
   const { user } = await authenticateUseCase.execute(authenticationBodyParsed);
+
   const token = await reply.jwtSign(
     {},
     {
@@ -25,5 +26,23 @@ export const authenticate = async (
     }
   );
 
-  return reply.status(200).send({ token });
+  const refreshToken = await reply.jwtSign(
+    {},
+    {
+      sign: {
+        sub: user.id,
+        expiresIn: "7d",
+      },
+    }
+  );
+
+  return reply
+    .setCookie("refreshCookie", refreshToken, {
+      path: "/",
+      secure: true,
+      sameSite: true,
+      httpOnly: true,
+    })
+    .status(200)
+    .send({ token });
 };

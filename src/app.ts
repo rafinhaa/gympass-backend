@@ -3,6 +3,8 @@ import { env } from "@/env";
 
 import { ZodError } from "zod";
 import fastifyJwt from "@fastify/jwt";
+import fastifyCookie from "@fastify/cookie";
+
 import { usersRoutes } from "@/http/controller/users/routes";
 import { gymsRoutes } from "@/http/controller/gyms/routes";
 import { checkInsRoutes } from "./http/controller/check-ins/routes";
@@ -25,8 +27,17 @@ export const app = fastify({
   logger: envToLogger[env.NODE_ENV],
 });
 
+app.register(fastifyCookie);
+
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: "refreshToken",
+    signed: false,
+  },
+  sign: {
+    expiresIn: "10m",
+  },
 });
 
 app.register(checkInsRoutes, {
