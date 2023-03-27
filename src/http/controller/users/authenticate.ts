@@ -37,7 +37,7 @@ export const authenticate = async (
   );
 
   return reply
-    .setCookie("refreshCookie", refreshToken, {
+    .setCookie("refreshToken", refreshToken, {
       path: "/",
       secure: true,
       sameSite: true,

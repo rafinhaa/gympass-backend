@@ -6,10 +6,13 @@ import { register } from "@/http/controller/users/register";
 
 import { BaseError } from "@/use-cases/errors/base-error";
 import { verifyJWT } from "@/http/middleware/verify-jwt";
+import { refresh } from "./refresh";
 
 export const usersRoutes = async (app: FastifyInstance) => {
   app.post("/users", register);
   app.post("/sessions", authenticate);
+
+  app.patch("/token/refresh", refresh);
 
   app.get("/me", { preHandler: verifyJWT }, profile);
 
