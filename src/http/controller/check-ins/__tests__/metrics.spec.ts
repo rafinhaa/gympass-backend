@@ -13,7 +13,7 @@ describe("Metrics Check-in E2E", () => {
   });
 
   it("should be able to list the metrics of check-in", async () => {
-    const { token } = await createAndAuthenticateUsers(app);
+    const { token } = await createAndAuthenticateUsers(app, true);
 
     const user = await prisma.user.findFirstOrThrow();
 
