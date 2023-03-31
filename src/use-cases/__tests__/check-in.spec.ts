@@ -50,21 +50,23 @@ describe("Check-in Use Case", () => {
   });
 
   it("should not be able to check in twice in the same day", async () => {
-    vi.setSystemTime(new Date("2021-01-01T00:00:00.000Z"));
+    vi.setSystemTime(new Date(2022, 0, 20, 8, 0, 0));
 
-    const newCheckIn = async () =>
-      await sut.execute({
+    await sut.execute({
+      gymId: "gym-01",
+      userId: "user-01",
+      userLatitude: -27.2092052,
+      userLongitude: -49.6401091,
+    });
+
+    await expect(() =>
+      sut.execute({
         gymId: "gym-01",
         userId: "user-01",
         userLatitude: -27.2092052,
         userLongitude: -49.6401091,
-      });
-
-    await newCheckIn();
-
-    await expect(async () => await newCheckIn()).rejects.toBeInstanceOf(
-      MaxNumberOfCheckInsError
-    );
+      })
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError);
   });
 
   it("should be able to check in twice but in different days", async () => {
