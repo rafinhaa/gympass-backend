@@ -3450,6 +3450,11 @@ vite-tsconfig-paths@4.0.5:
   optionalDependencies:
     fsevents "~2.3.2"
 
+vitest-environment-prisma@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/vitest-environment-prisma/-/vitest-environment-prisma-0.3.0.tgz#e907b2cc98bffcb0be9d70045247dab34e3f9453"
+  integrity sha512-kx/+jPqRHbXgGGDuLxxlu8cG0jbhSfSwjeq0sFaQ5kuKSTFDZCkRjKWyhas+9HBcXaMsUiqac4PtaOazxrmr3g==
+
 vitest@0.29.2:
   version "0.29.2"
   resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.29.2.tgz#0376b547169ddefbde3fbc040b48569ec61d6179"
