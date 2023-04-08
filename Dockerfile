@@ -1,23 +1,19 @@
-# Use node:18-alpine as the base image
 FROM node:18-alpine
 
-# Set the working directory
-COPY . /app
-
-# Set the working directory to /app
 WORKDIR /app
 
-# Install dependencies in production mode
-RUN yarn --frozen-lockfile
+COPY package.json yarn.lock tsup.config.ts tsconfig.json ./
 
-# Run yarn build
-RUN yarn run build
+COPY ./src /app/src
 
-# Run migrations
-RUN npx prisma migrate deploy
+RUN yarn install --frozen-lockfile --production
 
-# Exclude files
-RUN find /app ! -name 'build' ! -name 'node_modules' -type f -exec rm -rf {} +
+COPY ./prisma/migrations /app/prisma/migrations
 
-# Set the command to start the app
-CMD ["node", "/app/build/server.js"]
+COPY ./prisma/schema.prisma /app/prisma/schema.prisma
+
+RUN yarn build
+
+RUN yarn cache clean && rm -rf src tsup.config.ts tsconfig.json
+
+CMD ["yarn", "prod"]
