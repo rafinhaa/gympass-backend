@@ -13,8 +13,5 @@ RUN yarn --frozen-lockfile
 # Run yarn build
 RUN yarn run build
 
-# Exclude files
-RUN find /app ! -name 'build' ! -name 'node_modules' -type f -exec rm -rf {} +
-
 # Set the command to start the app
 CMD ["node", "/app/build/server.js"]
