@@ -13,9 +13,6 @@ RUN yarn --frozen-lockfile
 # Run yarn build
 RUN yarn run build
 
-# Run migrations
-RUN npx prisma migrate deploy
-
 # Exclude files
 RUN find /app ! -name 'build' ! -name 'node_modules' -type f -exec rm -rf {} +
 
