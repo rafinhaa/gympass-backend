@@ -11,7 +11,7 @@ COPY . /home/app-build
 WORKDIR /home/app-build
 
 # Install dependencies in production mode
-RUN yarn install --production
+RUN yarn --frozen-lockfile
 
 # Run yarn build
 RUN yarn run build
