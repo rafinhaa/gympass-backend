@@ -2,13 +2,10 @@
 FROM node:18-alpine
 
 # Set the working directory
+COPY . /app
+
+# Set the working directory to /app
 WORKDIR /app
-
-# Copy all files to the container's /home/app-build directory
-COPY . /home/app-build
-
-# Set the working directory to /home/app-build
-WORKDIR /home/app-build
 
 # Install dependencies in production mode
 RUN yarn --frozen-lockfile
@@ -16,14 +13,11 @@ RUN yarn --frozen-lockfile
 # Run yarn build
 RUN yarn run build
 
-# Copy the build files to /app directory
-RUN cp -R build/. /app/
+# Run migrations
+RUN npx prisma migrate deploy
 
-# Clear out /home/app-build directory
-RUN rm -rf /home/app-build/*
-
-# Set the working directory back to /app
-WORKDIR /app
+# Exclude files
+RUN find /app ! -name 'build' ! -name 'node_modules' -type f -exec rm -rf {} +
 
 # Set the command to start the app
-CMD ["node", "/app/server.js"]
+CMD ["node", "/app/build/server.js"]

@@ -28,7 +28,7 @@ export class ValidatedCheckInUseCase {
     );
 
     if (distanceInMinutesFromCheckInCreation > 20)
-      throw new LateCheckInValidationError(0);
+      throw new LateCheckInValidationError();
 
     const checkInValidated: CheckIn = {
       ...checkIn,

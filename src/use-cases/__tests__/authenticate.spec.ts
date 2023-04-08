@@ -31,6 +31,7 @@ describe("Authenticate Use Case", () => {
       email: "johndoe@example.com",
       password_hash: expect.any(String),
       created_at: expect.any(Date),
+      role: "ADMIN",
     });
   });
 
