@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "preprod": "npx migrate deploy",
     "prod": "node build/server.js",
     "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
     "test:install-prisma-environment": "npm link vitest-environment-prisma",
@@ -29,7 +30,6 @@
     "eslint-plugin-import-helpers": "1.3.1",
     "npm-run-all": "4.1.5",
     "pino-pretty": "9.4.0",
-    "prisma": "4.11.0",
     "supertest": "6.3.3",
     "tsup": "6.6.3",
     "tsx": "3.12.3",
@@ -45,6 +45,7 @@
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
     "fastify": "4.14.1",
+    "prisma": "4.11.0",
     "zod": "3.21.4"
   }
 }
