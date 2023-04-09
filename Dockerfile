@@ -8,7 +8,7 @@ COPY ./src /app/src
 
 RUN yarn install --frozen-lockfile --production
 
-COPY ./prisma/migrations /app/prisma/migrations
+COPY ./prisma/migrations /app/migrations
 
 RUN yarn build
 
