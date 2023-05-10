@@ -19,7 +19,7 @@ const envToLogger = {
       },
     },
   },
-  production: false,
+  production: true,
   test: true,
 };
 
