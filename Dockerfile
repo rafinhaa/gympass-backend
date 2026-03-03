@@ -9,6 +9,8 @@ COPY tsconfig.json tsup.config.ts ./
 COPY src ./src
 COPY prisma ./prisma
 
+RUN npx prisma generate
+
 RUN yarn build
 
 
@@ -18,13 +20,12 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --production
 
-RUN yarn install --frozen-lockfile --production \
-  && yarn cache clean
-
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/build ./build
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
-EXPOSE 3000
+EXPOSE 3333
 
-CMD ["sh", "-c", "node dist/db/migrate.js && node dist/http/server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node build/server.js"]
