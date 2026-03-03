@@ -1,19 +1,31 @@
-FROM node:18-alpine
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json yarn.lock tsup.config.ts tsconfig.json ./
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-COPY ./src /app/src
+COPY tsconfig.json tsup.config.ts ./
+COPY src ./src
+COPY prisma ./prisma
 
-RUN yarn install --frozen-lockfile --production
-
-COPY ./prisma/migrations /app/prisma/migrations
-
-COPY ./prisma/schema.prisma /app/prisma/schema.prisma
+RUN npx prisma generate
 
 RUN yarn build
 
-RUN yarn cache clean && rm -rf src tsup.config.ts tsconfig.json
 
-CMD ["yarn", "prod"]
+FROM node:18-alpine AS runner
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --production
+
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+
+EXPOSE 3333
+
+CMD ["sh", "-c", "npx prisma migrate deploy && node build/server.js"]
