@@ -22,7 +22,13 @@ describe("Refresh E2E", () => {
       password: "123456",
     });
 
-    const cookies = authResponse.get("Set-Cookie");
+    const rawCookies = authResponse.get("Set-Cookie");
+
+    const cookies = Array.isArray(rawCookies)
+      ? rawCookies
+      : rawCookies
+        ? [rawCookies]
+        : [];
 
     const response = await request(app.server)
       .patch("/token/refresh")
